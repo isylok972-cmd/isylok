@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import BoutonDeconnexion from '@/composants/BoutonDeconnexion'
 import styles from './administration.module.css'
 
 interface Parametres {
@@ -235,15 +236,18 @@ export default function PageAdministration() {
           </button>
         </div>
 
-        {ongletActif === 'parametres' ? (
-          <button className={styles.boutonSauvegarder} onClick={sauvegarderParams} disabled={sauvegardeEnCours}>
-            {sauvegardeEnCours ? '⏳ Sauvegarde...' : '💾 Enregistrer'}
-          </button>
-        ) : (
-          <button className={styles.boutonSauvegarder} onClick={ouvrirAjoutUtilisateur}>
-            + Ajouter un membre
-          </button>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {ongletActif === 'parametres' ? (
+            <button className={styles.boutonSauvegarder} onClick={sauvegarderParams} disabled={sauvegardeEnCours}>
+              {sauvegardeEnCours ? '⏳ Sauvegarde...' : '💾 Enregistrer'}
+            </button>
+          ) : (
+            <button className={styles.boutonSauvegarder} onClick={ouvrirAjoutUtilisateur}>
+              + Ajouter un membre
+            </button>
+          )}
+          <BoutonDeconnexion />
+        </div>
       </header>
 
       {ongletActif === 'parametres' && (

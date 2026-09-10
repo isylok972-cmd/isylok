@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import BoutonDeconnexion from '@/composants/BoutonDeconnexion'
 import { BULLES_CONFIG } from '@/lib/config-bulles'
 import type { ConfigBulle, RoleUtilisateur } from '@/types'
 import styles from './page.module.css'
@@ -164,6 +165,7 @@ export default function PageAccueil() {
             <span className={styles.pointReseau} />
             <span>En ligne</span>
           </div>
+          <BoutonDeconnexion />
         </div>
       </header>
 

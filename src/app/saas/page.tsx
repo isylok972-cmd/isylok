@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import BoutonDeconnexion from '@/composants/BoutonDeconnexion'
 
 interface LicenceData {
   id?: string
@@ -222,7 +223,7 @@ export default function PageConsoleSaaS() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '12px' }}>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             <Link
               href="/"
               style={{
@@ -241,6 +242,7 @@ export default function PageConsoleSaaS() {
             >
               ← Retour au Dashboard
             </Link>
+            <BoutonDeconnexion />
             <button
               onClick={sauvegarder}
               disabled={sauvegardeEnCours}
