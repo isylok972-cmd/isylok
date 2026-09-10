@@ -3,7 +3,7 @@
 // ===========================================
 
 // Rôles utilisateur
-export type RoleUtilisateur = 'ADMIN' | 'SECRETAIRE' | 'LIVREUR' | 'OPERATEUR_ATELIER' | 'GESTIONNAIRE_WEB'
+export type RoleUtilisateur = 'SUPER_ADMIN' | 'ADMIN' | 'SECRETAIRE' | 'LIVREUR' | 'OPERATEUR_ATELIER' | 'GESTIONNAIRE_WEB'
 
 // Statuts des devis
 export type StatutDevis = 'BROUILLON' | 'ENVOYE' | 'VALIDE' | 'REFUSE' | 'FACTURE'

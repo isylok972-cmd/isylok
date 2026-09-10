@@ -145,4 +145,14 @@ export const BULLES_CONFIG: ConfigBulle[] = [
     lien: '/admin/web',
     rolesAutorises: ['ADMIN', 'GESTIONNAIRE_WEB'],
   },
+  {
+    id: 15,
+    nom: 'Console SaaS / Licences',
+    sousTitre: 'Pilotage des abonnements, expirations et modules',
+    icone: '👑',
+    couleur: '#f59e0b',
+    couleurGradient: '#fbbf24',
+    lien: '/saas',
+    rolesAutorises: ['SUPER_ADMIN'],
+  },
 ]

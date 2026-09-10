@@ -7,6 +7,9 @@ export const ROLES_VALIDES = ['ADMIN', 'SECRETAIRE', 'LIVREUR', 'OPERATEUR_ATELI
 export async function GET() {
   try {
     const utilisateurs = await prisma.utilisateur.findMany({
+      where: {
+        role: { not: 'SUPER_ADMIN' }
+      },
       orderBy: { nom: 'asc' },
       select: {
         id: true,

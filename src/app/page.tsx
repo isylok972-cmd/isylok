@@ -169,7 +169,13 @@ export default function PageAccueil() {
 
       <section className={styles.grilleBulles}>
         {BULLES_CONFIG
-          .filter(bulle => !roleUtilisateur || bulle.rolesAutorises.includes(roleUtilisateur))
+          .filter(bulle => {
+            if (bulle.rolesAutorises.includes('SUPER_ADMIN')) {
+              return roleUtilisateur === 'SUPER_ADMIN'
+            }
+            if (roleUtilisateur === 'SUPER_ADMIN') return true
+            return roleUtilisateur ? bulle.rolesAutorises.includes(roleUtilisateur) : false
+          })
           .map((bulle, index) => {
             let badgeVal = 0
             if (bulle.id === 2) badgeVal = badges.stocks || 0 // Bulle 2: Stocks

@@ -345,7 +345,7 @@ export default function PageAdministration() {
               </tr>
             </thead>
             <tbody>
-              {equipe.map(u => (
+              {equipe.filter((u: any) => u.role !== 'SUPER_ADMIN').map((u: any) => (
                 <tr key={u.id}>
                   <td style={{ fontWeight: 600 }}>{u.prenom} {u.nom}</td>
                   <td>{u.email}</td>

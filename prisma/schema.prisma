@@ -687,4 +687,19 @@ model OptionZoneLivraison {
   @@map("options_zones_livraison")
 }
 
+// =====================
+// PILOTAGE & LICENCE SAAS
+// =====================
 
+model LicenceSaaS {
+  id                    String    @id @default(cuid())
+  cleLicence            String    @unique @default("ISYLOK-PRO-972")
+  nomEntreprise         String    @default("Isy Lok Martinique")
+  dateExpirationGlobale DateTime?
+  statutActif           Boolean   @default(true)
+  modulesConfig         Json?     // Configuration des modules : { stocks: true, commercial: true, planning: true, atelier: true, terrain: true, achats: true, rh: true, cautions: true, web: true, direction: true }
+  dateCreation          DateTime  @default(now())
+  dateMaj               DateTime  @updatedAt
+
+  @@map("licences_saas")
+}
