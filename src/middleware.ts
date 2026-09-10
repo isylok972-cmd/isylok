@@ -97,9 +97,10 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/icons') ||
     pathname === '/favicon.ico' ||
     pathname === '/manifest.webmanifest' ||
+    pathname === '/manifest.json' ||
     pathname === '/robots.txt' ||
     pathname === '/sitemap.xml' ||
-    /\.(png|jpg|jpeg|gif|svg|webp|ico|css|js|woff|woff2|ttf|map)$/i.test(pathname)
+    /\.(png|jpg|jpeg|gif|svg|webp|ico|css|js|json|webmanifest|woff|woff2|ttf|map)$/i.test(pathname)
   ) {
     return NextResponse.next()
   }
