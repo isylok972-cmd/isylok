@@ -87,7 +87,8 @@ export default function PageConnexion() {
               type="password" 
               value={motDePasse} 
               onChange={e => setMotDePasse(e.target.value)}
-              placeholder="••••••••"
+              placeholder="Votre mot de passe"
+              autoComplete="current-password"
               style={{ padding: '12px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(124, 16, 35, 0.4)', borderRadius: '8px', color: 'white', outline: 'none' }}
               required
             />
