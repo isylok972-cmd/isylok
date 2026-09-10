@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   keywords: ['ERP', 'location', 'événementiel', 'gestion', 'devis', 'stocks', 'matériel', 'logistique', 'livraison'],
   authors: [{ name: 'Isy Lok' }],
   manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/icon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
