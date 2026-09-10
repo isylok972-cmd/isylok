@@ -1,0 +1,584 @@
+/* Isy Lok — Module Planning & Réservations */
+
+.conteneur {
+  min-height: 100vh;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* En-tête */
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(18, 18, 42, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(251, 191, 36, 0.1);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.5s ease-out;
+}
+
+@keyframes apparaitre {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.enteteGauche {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.boutonRetour {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 10px;
+  color: #fcd34d;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.boutonRetour:hover {
+  background: rgba(251, 191, 36, 0.2);
+  transform: translateX(-2px);
+}
+
+.titreModule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titreModule h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #C9A84C, #B8922A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.titreModule span {
+  font-size: 28px;
+}
+
+/* Cartes statistiques */
+.statsRapides {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.6s ease-out 0.1s both;
+}
+
+.carteStat {
+  padding: 18px 20px;
+  background: rgba(18, 18, 42, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(251, 191, 36, 0.1);
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.carteStat:hover {
+  border-color: rgba(251, 191, 36, 0.25);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+}
+
+.carteStatEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.carteStatLabel {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.carteStatIcone { font-size: 20px; }
+
+.carteStatValeur {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+.carteStatSous {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Barre d'outils et de navigation temporelle */
+.barreNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  background: rgba(18, 18, 42, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.15);
+  border-radius: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.groupeBoutonsMois {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.boutonNavDate {
+  padding: 8px 14px;
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.boutonNavDate:hover {
+  background: rgba(51, 65, 85, 0.9);
+  border-color: rgba(251, 191, 36, 0.4);
+  color: #fcd34d;
+}
+
+.titrePeriode {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  min-width: 180px;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+/* Sélecteur de vue (Mois / Semaine / Liste) */
+.selecteurVue {
+  display: flex;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.boutonVue {
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.boutonVueActif {
+  background: #C9A84C;
+  color: #0b080b;
+}
+
+/* Filtres rapides */
+.barreFiltres {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.champRecherche {
+  flex: 1;
+  min-width: 240px;
+  padding: 10px 16px;
+  background: rgba(18, 18, 42, 0.5);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13px;
+}
+
+.champRecherche:focus {
+  outline: none;
+  border-color: #C9A84C;
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.2);
+}
+
+.pastillesFiltres {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pastilleFiltre {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pastilleFiltre:hover {
+  color: #f1f5f9;
+  border-color: rgba(251, 191, 36, 0.4);
+}
+
+.pastilleFiltreActive {
+  background: #C9A84C;
+  color: #0b080b;
+  border-color: #C9A84C;
+  box-shadow: 0 2px 8px rgba(201, 168, 76, 0.3);
+}
+
+/* ================= GRILLE MENSUELLE ================= */
+.calendrierMois {
+  background: rgba(18, 18, 42, 0.5);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(251, 191, 36, 0.15);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.joursSemaineEntete {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.jourSemaineTitre {
+  padding: 12px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #C9A84C;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.grilleJours {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: minmax(120px, auto);
+}
+
+.celluleJour {
+  padding: 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: background 0.15s ease;
+  min-height: 120px;
+}
+
+.celluleJour:nth-child(7n) {
+  border-right: none;
+}
+
+.celluleJour:hover {
+  background: rgba(251, 191, 36, 0.03);
+}
+
+.celluleHorsMois {
+  opacity: 0.35;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.celluleAujourdhui {
+  background: rgba(201, 168, 76, 0.08) !important;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+}
+
+.numeroJourConteneur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.numeroJour {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.celluleAujourdhui .numeroJour {
+  color: #fcd34d;
+  background: rgba(201, 168, 76, 0.3);
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* Pastille Événement dans la case du calendrier */
+.carteEvenementPlanning {
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.carteEvenementPlanning:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Couleurs de tension */
+.tensionNormal {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-left: 3px solid #10b981;
+  color: #6ee7b7;
+}
+
+.tensionCritique {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-left: 3px solid #f59e0b;
+  color: #fcd34d;
+}
+
+.tensionSurreservation {
+  background: rgba(239, 68, 68, 0.18);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  border-left: 3px solid #ef4444;
+  color: #fca5a5;
+  animation: pulseRouge 2s infinite ease-in-out;
+}
+
+@keyframes pulseRouge {
+  0%, 100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0); }
+  50% { box-shadow: 0 0 8px rgba(239, 68, 68, 0.4); }
+}
+
+.evenementNumeroTitre {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.evenementClient {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+/* ================= VUE SEMAINE TIMELINE ================= */
+.timelineSemaine {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+.colonneJourSemaine {
+  background: rgba(18, 18, 42, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(251, 191, 36, 0.15);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.colonneJourEntete {
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+  padding-bottom: 8px;
+  text-align: center;
+}
+
+.colonneJourNom {
+  font-size: 12px;
+  font-weight: 700;
+  color: #C9A84C;
+  text-transform: uppercase;
+}
+
+.colonneJourDate {
+  font-size: 16px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+.sectionFluxTitre {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.listeFluxCartes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ================= MODALE DÉTAIL ÉVÉNEMENT ================= */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: apparaitre 0.2s ease-out;
+}
+
+.modale {
+  background: #0f172a;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: 20px;
+  max-width: 780px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  padding: 24px;
+}
+
+.modaleEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+}
+
+.boutonFermer {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+.boutonFermer:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.grilleInfosEvenement {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.blocInfoEvenement {
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.blocInfoTitre {
+  font-size: 11px;
+  font-weight: 700;
+  color: #C9A84C;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.bannerTensionAlerte {
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Tableau matériel modale */
+.tableauMateriel {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.tableauMateriel th {
+  background: rgba(30, 41, 59, 0.8);
+  padding: 8px 12px;
+  text-align: left;
+  color: #94a3b8;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tableauMateriel td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #e2e8f0;
+}
+
+.barometreStock {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.barometreRempli {
+  height: 100%;
+  border-radius: 3px;
+}
+
+@media (max-width: 900px) {
+  .statsRapides { grid-template-columns: repeat(2, 1fr); }
+  .timelineSemaine { grid-template-columns: 1fr; }
+  .grilleInfosEvenement { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .conteneur { padding: 12px; }
+  .statsRapides { grid-template-columns: 1fr; }
+  .barreNavigation { flex-direction: column; align-items: stretch; }
+}

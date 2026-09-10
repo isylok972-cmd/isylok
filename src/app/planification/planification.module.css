@@ -1,0 +1,346 @@
+﻿/* Isy Lok — Planification & Terrain */
+
+.conteneur {
+  min-height: 100vh;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(18, 18, 42, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.5s ease-out;
+}
+
+@keyframes apparaitre {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.enteteGauche {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.boutonRetour {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 10px;
+  color: #34d399;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.boutonRetour:hover {
+  background: rgba(16, 185, 129, 0.2);
+  transform: translateX(-2px);
+}
+
+.titreModule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titreModule h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10b981, #059669);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Grille Split (Livraisons à prévoir / Tournées) */
+.grillePlanification {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+  animation: apparaitre 0.6s ease-out 0.2s both;
+}
+
+.panneau {
+  background: rgba(18, 18, 42, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panneauTitre {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.carteLivraison {
+  background: rgba(10, 10, 26, 0.6);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.carteLivraison:hover, .carteLivraisonActive {
+  border-color: rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.carteLivraisonEntete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.livraisonClient {
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.livraisonNum {
+  font-family: monospace;
+  font-size: 12px;
+  color: #34d399;
+}
+
+.livraisonAdresse {
+  font-size: 13px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.boutonAssocier {
+  margin-top: 8px;
+  width: 100%;
+  padding: 8px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.boutonAssocier:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Tournées */
+.tourneeCarte {
+  background: rgba(10, 10, 26, 0.6);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.tourneeEntete {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(16, 185, 129, 0.2);
+}
+
+.tourneeLivreur {
+  font-weight: 700;
+  color: #f1f5f9;
+  font-size: 16px;
+}
+
+.etapeCarte {
+  background: rgba(18, 18, 42, 0.8);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.etapeOrdre {
+  width: 24px;
+  height: 24px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* Modal Planification */
+.modale {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; max-width: 500px;
+  background: #0d080b;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 20px;
+  padding: 24px;
+  z-index: 100;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+}
+
+.champGroupe {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.champGroupe label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.champGroupe input,
+.champGroupe select {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(10, 10, 26, 0.6);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 10px;
+  color: #f1f5f9;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+}
+
+/* Terrain / Livreur Mobile View */
+.mobileConteneur {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #080508;
+  padding: 16px;
+}
+
+.mobileEntete {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.mobileDate {
+  font-size: 14px;
+  color: #10b981;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.mobileTitre {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+.mobileCarteEtape {
+  background: rgba(18, 18, 42, 0.8);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mobileEtapeType {
+  position: absolute;
+  top: 0; right: 0;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  border-bottom-left-radius: 12px;
+}
+
+.mobileEtapeClient {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 8px;
+  margin-top: 4px;
+}
+
+.mobileEtapeAdresse {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.boutonGps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.boutonGps:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+@media (max-width: 900px) {
+  .grillePlanification { grid-template-columns: 1fr; }
+}

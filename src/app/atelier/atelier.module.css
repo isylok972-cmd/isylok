@@ -1,0 +1,693 @@
+/* Isy Lok — Espace Atelier Vaisselle & Linge */
+
+.conteneur {
+  min-height: 100vh;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* En-tête */
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(18, 18, 42, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.5s ease-out;
+}
+
+@keyframes apparaitre {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.enteteGauche {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.boutonRetour {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: 10px;
+  color: #38bdf8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.boutonRetour:hover {
+  background: rgba(6, 182, 212, 0.2);
+  transform: translateX(-2px);
+}
+
+.titreModule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titreModule h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #22d3ee, #06b6d4, #0284c7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.titreModule span {
+  font-size: 28px;
+}
+
+.badgeOperateur {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #34d399;
+}
+
+/* Stats rapides */
+.statsRapides {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.6s ease-out 0.1s both;
+}
+
+.carteStat {
+  padding: 20px;
+  background: rgba(18, 18, 42, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.carteStat:hover {
+  border-color: rgba(6, 182, 212, 0.35);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+}
+
+.carteStatEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.carteStatLabel {
+  font-size: 12px;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.carteStatIcone { font-size: 20px; }
+
+.carteStatValeur {
+  font-family: 'Outfit', sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+.carteStatSous {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Onglets */
+.onglets {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  background: rgba(18, 18, 42, 0.5);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: 14px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.6s ease-out 0.2s both;
+}
+
+.onglet {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: transparent;
+  color: #94a3b8;
+}
+
+.onglet:hover {
+  color: #f1f5f9;
+  background: rgba(6, 182, 212, 0.08);
+}
+
+.ongletActif {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.25), rgba(2, 132, 199, 0.2));
+  color: #38bdf8;
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+}
+
+.ongletEmoji { font-size: 18px; }
+
+/* Panneau de contenu */
+.panneauContenu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: apparaitre 0.4s ease-out;
+}
+
+/* SECTION 1: SORTIES PRÉVUES */
+.listeEvenementsSorties {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.carteEvenementSortie {
+  background: rgba(18, 18, 42, 0.45);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.carteEvenementSortie:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.evenementEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.evenementInfosPrincipales {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.evenementBadgeDate {
+  padding: 6px 12px;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 10px;
+  color: #38bdf8;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.evenementTitre {
+  font-size: 16px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.evenementSousTitre {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.barreProgressionConteneur {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.barreProgressionRemplissage {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #10b981);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.grilleArticlesSortie {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.itemArticleSortie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(10, 8, 14, 0.6);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.itemArticleSortie:hover {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.itemArticleSortieConditionne {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.3);
+}
+
+.itemArticleSortieInfos {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.caseCocherCustom {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(6, 182, 212, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: white;
+  transition: all 0.15s ease;
+}
+
+.caseCocherCustomActive {
+  background: #10b981;
+  border-color: #10b981;
+}
+
+.itemArticleNom {
+  font-size: 13px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.itemArticleQte {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #38bdf8;
+}
+
+/* SECTION 2: RETOURS & CONTRÔLE */
+.panneauDeclarationCasse {
+  background: rgba(18, 18, 42, 0.5);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.formulaireCasse {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.champGroupe {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.champGroupe label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.champGroupe select,
+.champGroupe input,
+.champGroupe textarea {
+  padding: 10px 14px;
+  background: rgba(10, 8, 14, 0.8);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: 10px;
+  color: #f1f5f9;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.champGroupe select:focus,
+.champGroupe input:focus,
+.champGroupe textarea:focus {
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+.boutonEnregistrerCasse {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+.boutonEnregistrerCasse:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* SECTION 3: KANBAN BLANCHISSERIE / LAVAGE */
+.kanbanLavage {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.colonneKanban {
+  background: rgba(18, 18, 42, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(6, 182, 212, 0.18);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 450px;
+}
+
+.colonneEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.colonneTitre {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badgeCompte {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.carteLot {
+  background: rgba(10, 8, 14, 0.7);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.carteLot:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.lotNumero {
+  font-family: monospace;
+  font-size: 11px;
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.lotNomArticle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.lotQuantite {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #22d3ee;
+}
+
+.lotTypeBadge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  background: rgba(6, 182, 212, 0.15);
+  color: #38bdf8;
+}
+
+.boutonAvancerStatut {
+  padding: 8px 12px;
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 6px;
+}
+
+.boutonAvancerStatut:hover {
+  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+}
+
+.boutonPropre {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+}
+
+.boutonPropre:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .statsRapides { grid-template-columns: repeat(2, 1fr); }
+  .kanbanLavage { grid-template-columns: 1fr; }
+  .entete { flex-direction: column; gap: 12px; }
+}
+
+@media (max-width: 600px) {
+  .conteneur { padding: 12px; }
+  .statsRapides { grid-template-columns: 1fr; }
+  .onglets { flex-direction: column; }
+}
+
+/* Onglet Planning & Rotations Atelier */
+.sectionPlanningAtelier {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.banniereRotationsSerrees {
+  padding: 16px 20px;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.titreAlerteRotations {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #f87171;
+}
+
+.grilleRotations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.carteRotation {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: transform 0.2s ease;
+}
+
+.carteRotation:hover {
+  transform: translateY(-2px);
+  border-color: #ef4444;
+}
+
+.rotationNomArticle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.rotationBadgeDelai {
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(239, 68, 68, 0.25);
+  color: #fca5a5;
+  margin-bottom: 2px;
+}
+
+.rotationDetailsFlux {
+  font-size: 11.5px;
+  color: #94a3b8;
+  lineHeight: 1.3;
+}
+
+/* Feuille de route journalière */
+.panneauFeuilleDeRoute {
+  background: rgba(18, 18, 42, 0.6);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.feuilleDeRouteEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.feuilleDeRouteTitre {
+  font-size: 16px;
+  font-weight: 700;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.colonnesFeuilleDeRoute {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 800px) {
+  .colonnesFeuilleDeRoute { grid-template-columns: 1fr; }
+}
+
+.colonneFeuille {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.colonneFeuilleTitre {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.carteFluxItem {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+
+.carteFluxItem:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+}
+
+.carteFluxEntete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.carteFluxNumero {
+  font-weight: 700;
+  color: #38bdf8;
+  font-size: 12px;
+}
+
+.carteFluxClient {
+  font-size: 12px;
+  color: #f1f5f9;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.listeArticlesPuces {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  font-size: 11.5px;
+  color: #cbd5e1;
+}
+

@@ -1,0 +1,39 @@
+{
+  "name": "Isy Lok - Logistique & Réception",
+  "short_name": "Isy Lok",
+  "description": "Application logistique, livraison et gestion de matériel de réception pour Isy Lok",
+  "start_url": "/terrain",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "lang": "fr",
+  "categories": ["business", "productivity", "logistics"],
+  "icons": [
+    {
+      "src": "/icones/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icones/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tournée Terrain Livreur",
+      "url": "/terrain",
+      "description": "Consulter les livraisons et reprises du jour"
+    },
+    {
+      "name": "Pointeuse Mobile",
+      "url": "/terrain",
+      "description": "Prise de poste et fin de journée GPS"
+    }
+  ]
+}

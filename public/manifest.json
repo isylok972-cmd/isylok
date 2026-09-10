@@ -1,0 +1,38 @@
+{
+  "name": "Isy Lok",
+  "short_name": "Isy Lok",
+  "description": "ERP pour la location de matériel événementiel",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a12",
+  "theme_color": "#7C1023",
+  "orientation": "portrait",
+  "lang": "fr",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/icones/icone-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icones/icone-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mes Missions (Terrain)",
+      "url": "/terrain",
+      "description": "Voir mes livraisons du jour"
+    },
+    {
+      "name": "Pointeuse",
+      "url": "/rh",
+      "description": "Pointer mon début/fin de service"
+    }
+  ]
+}

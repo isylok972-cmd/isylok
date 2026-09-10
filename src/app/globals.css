@@ -1,0 +1,379 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ===========================================
+   Isy Lok Premium — Système de Design
+   Thème Rouge Bordeaux & Or sur Fond Sombre
+   =========================================== */
+
+/* Variables CSS personnalisées */
+:root {
+  /* ══════════════════════════════════════════
+     PALETTE ISY LOK PREMIUM
+     Rouge Bordeaux #7C1023 + Or #C9A84C
+     Fond Noir Profond — ZÉRO BLEU/VIOLET
+     ══════════════════════════════════════════ */
+
+  /* Rouge Bordeaux */
+  --couleur-primaire: #7C1023;
+  --couleur-primaire-clair: #A01830;
+  --couleur-primaire-fonce: #4A0815;
+
+  /* Or Isy Lok */
+  --couleur-or: #C9A84C;
+  --couleur-or-clair: #E0C06E;
+  --couleur-or-fonce: #A8872A;
+
+  /* Fonctionnel */
+  --couleur-secondaire: #C9A84C;
+  --couleur-accent: #C9A84C;
+  --couleur-succes: #10b981;
+  --couleur-attention: #d97706;
+  --couleur-danger: #ef4444;
+  --couleur-info: #3b82f6;
+
+  /* ── FONDS — Noir profond, zéro bleu ── */
+  --fond-principal: #080508;
+  --fond-surface: #0d080b;
+  --fond-surface-elevee: #150d10;
+  --fond-carte: rgba(12, 5, 8, 0.85);
+  --fond-verre: rgba(12, 5, 8, 0.65);
+
+  /* ── Texte ── */
+  --texte-principal: #f5f0ee;
+  --texte-secondaire: #a89090;
+  --texte-muted: #6b5858;
+  --texte-or: #C9A84C;
+
+  /* ── Bordures — Or bien visible ── */
+  --bordure: rgba(201, 168, 76, 0.18);
+  --bordure-or: rgba(201, 168, 76, 0.45);
+  --bordure-hover: rgba(201, 168, 76, 0.65);
+  --bordure-or-hover: rgba(201, 168, 76, 0.8);
+  --bordure-bordeaux: rgba(124, 16, 35, 0.5);
+
+  /* ── Ombres ── */
+  --ombre-carte: 0 4px 24px rgba(0, 0, 0, 0.6);
+  --ombre-elevee: 0 8px 40px rgba(0, 0, 0, 0.7);
+  --ombre-lueur: 0 0 40px rgba(124, 16, 35, 0.25);
+  --ombre-or: 0 0 30px rgba(201, 168, 76, 0.2);
+
+  /* ── Rayons ── */
+  --rayon-sm: 8px;
+  --rayon-md: 12px;
+  --rayon-lg: 16px;
+  --rayon-xl: 24px;
+  --rayon-rond: 50%;
+
+  /* ── Transitions ── */
+  --transition-rapide: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normale: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-lente: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Typographie ── */
+  --police-principale: 'Inter', system-ui, -apple-system, sans-serif;
+  --police-titre: 'Outfit', 'Inter', system-ui, sans-serif;
+}
+
+/* Reset et base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--police-principale);
+  background: var(--fond-principal);
+  color: var(--texte-principal);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Fond animé bordeaux/noir — zéro bleu */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse 90% 50% at 50% -10%, rgba(100, 8, 22, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 90%, rgba(201, 168, 76, 0.09) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 35% at 10% 70%, rgba(74, 8, 21, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Titres */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--police-titre);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fond-principal);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--couleur-primaire), var(--couleur-or-fonce));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--couleur-primaire-clair), var(--couleur-or));
+}
+
+/* Sélection de texte */
+::selection {
+  background: rgba(201, 168, 76, 0.25);
+  color: #fff;
+}
+
+/* ===========================================
+   Composants de base
+   =========================================== */
+
+/* Carte Glassmorphism */
+.carte-verre {
+  background: var(--fond-verre);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-lg);
+  transition: all var(--transition-normale);
+}
+
+.carte-verre:hover {
+  border-color: var(--bordure-hover);
+  box-shadow: var(--ombre-lueur);
+}
+
+/* Boutons */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-family: var(--police-principale);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--rayon-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-rapide);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.bouton-primaire {
+  background: linear-gradient(135deg, var(--couleur-primaire), #A01830);
+  color: white;
+  box-shadow: 0 2px 12px rgba(124, 16, 35, 0.4);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+.bouton-primaire:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(124, 16, 35, 0.5), 0 0 12px rgba(201, 168, 76, 0.15);
+  border-color: rgba(201, 168, 76, 0.4);
+}
+
+.bouton-or {
+  background: linear-gradient(135deg, var(--couleur-or-fonce), var(--couleur-or));
+  color: #0a0a12;
+  font-weight: 700;
+  box-shadow: 0 2px 12px rgba(201, 168, 76, 0.3);
+}
+
+.bouton-or:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(201, 168, 76, 0.45);
+}
+
+.bouton-secondaire {
+  background: var(--fond-surface-elevee);
+  color: var(--texte-principal);
+  border: 1px solid var(--bordure);
+}
+
+.bouton-secondaire:hover {
+  border-color: var(--bordure-hover);
+  background: rgba(124, 16, 35, 0.1);
+}
+
+/* Badge de statut */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-succes {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.badge-bordeaux {
+  background: rgba(124, 16, 35, 0.2);
+  color: #D4496A;
+  border: 1px solid rgba(124, 16, 35, 0.3);
+}
+
+.badge-or {
+  background: rgba(201, 168, 76, 0.15);
+  color: var(--couleur-or);
+  border: 1px solid rgba(201, 168, 76, 0.25);
+}
+
+.badge-attention {
+  background: rgba(217, 119, 6, 0.15);
+  color: #B8922A;
+  border: 1px solid rgba(217, 119, 6, 0.2);
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge-info {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Indicateur hors-ligne */
+.indicateur-reseau {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all var(--transition-normale);
+}
+
+.indicateur-en-ligne {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.indicateur-hors-ligne {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  animation: pulsation 2s infinite;
+}
+
+@keyframes pulsation {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Animation d'entrée */
+@keyframes apparition {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes apparitionBulle {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes flottement {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes rotationDouce {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Champ de formulaire */
+.champ-saisie {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--fond-surface);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-md);
+  color: var(--texte-principal);
+  font-family: var(--police-principale);
+  font-size: 14px;
+  transition: all var(--transition-rapide);
+  outline: none;
+}
+
+.champ-saisie::placeholder {
+  color: var(--texte-muted);
+}
+
+.champ-saisie:focus {
+  border-color: var(--couleur-or);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+}
+
+/* Titre Or — pour les KPI et titres importants */
+.titre-or {
+  background: linear-gradient(135deg, var(--couleur-or-fonce), var(--couleur-or-clair));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Carte KPI Premium */
+.carte-kpi-or {
+  border-color: var(--bordure-or);
+  box-shadow: var(--ombre-or);
+}
+
+.carte-kpi-or:hover {
+  border-color: var(--bordure-or-hover);
+  box-shadow: 0 0 32px rgba(201, 168, 76, 0.2);
+}
+
+/* Responsive utilitaires */
+@media (max-width: 768px) {
+  :root {
+    --rayon-lg: 12px;
+    --rayon-xl: 16px;
+  }
+}

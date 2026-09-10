@@ -1,0 +1,690 @@
+// ===========================================
+// Event-Gérance Pro — Schéma de Base de Données
+// ===========================================
+// Pour migrer vers MySQL : changer "sqlite" → "mysql"
+// et mettre à jour DATABASE_URL dans .env
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// =====================
+// AUTHENTIFICATION & RH
+// =====================
+
+model Utilisateur {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  motDePasse     String
+  nom            String
+  prenom         String
+  telephone      String?
+  role           String   @default("LIVREUR") // ADMIN, SECRETAIRE, LIVREUR, OPERATEUR_ATELIER, GESTIONNAIRE_WEB
+  actif          Boolean  @default(true)
+  photoUrl       String?
+  dateCreation   DateTime @default(now())
+  dateMaj        DateTime @updatedAt
+
+  // Relations
+  pointages      Pointage[]
+  pointagesLivreur PointageLivreur[]
+  tourneesLivreur Tournee[]   @relation("LivreurTournees")
+  devisCrees     Devis[]      @relation("CreateurDevis")
+  journalActions JournalAudit[]
+  sessions       Session[]
+  comptes        Compte[]
+
+  @@map("utilisateurs")
+}
+
+model Compte {
+  id                String  @id @default(cuid())
+  utilisateurId     String
+  type              String
+  fournisseur       String
+  fournisseurCompteId String
+  jetonAcces        String?
+  jetonRafraichissement String?
+  expirationJeton   Int?
+  typeJeton         String?
+  portee            String?
+  idJeton           String?
+  etatSession       String?
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@unique([fournisseur, fournisseurCompteId])
+  @@map("comptes")
+}
+
+model Session {
+  id             String   @id @default(cuid())
+  jetonSession   String   @unique
+  utilisateurId  String
+  expiration     DateTime
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Pointage {
+  id              String   @id @default(cuid())
+  utilisateurId   String
+  type            String   // DEBUT, FIN
+  horodatage      DateTime @default(now())
+  latitudeGps     Float?
+  longitudeGps    Float?
+  adresseGps      String?
+  note            String?
+  synchronise     Boolean  @default(true)
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id])
+
+  @@map("pointages")
+}
+
+model PointageLivreur {
+  id            String    @id @default(cuid())
+  utilisateurId String
+  date          DateTime  @default(now())
+  heureDebut    DateTime
+  gpsDebut      String?   // "latitude,longitude"
+  heureFin      DateTime?
+  gpsFin        String?
+  totalHeures   Float?    // calcul automatique de durée en heures
+  notes         String?
+  dateCreation  DateTime  @default(now())
+  dateMaj       DateTime  @updatedAt
+
+  utilisateur   Utilisateur @relation(fields: [utilisateurId], references: [id])
+
+  @@map("pointages_livreur")
+}
+
+// =====================
+// CLIENTS & CRM
+// =====================
+
+model Client {
+  id               String   @id @default(cuid())
+  type             String   @default("PARTICULIER") // PARTICULIER, PROFESSIONNEL
+  nom              String
+  prenom           String?
+  entreprise       String?
+  siret            String?
+  email            String?
+  telephone        String
+  telephoneSecondaire String?
+  adresse          String?
+  codePostal       String?
+  ville            String?
+  grillesTarifaires String?  // JSON : grilles pro/particulier
+  notes            String?
+  statutApprobation String   @default("VALIDE") // VALIDE, EN_ATTENTE
+  dateCreation     DateTime @default(now())
+  dateMaj          DateTime @updatedAt
+
+  // Relations
+  devis            Devis[]
+  factures         Facture[]
+  cautions         Caution[]
+  declarationsCasse DeclarationCasse[]
+
+  @@map("clients")
+}
+
+model Caution {
+  id              String   @id @default(cuid())
+  clientId        String
+  devisId         String?
+  montant         Float
+  type            String   @default("CHEQUE") // CHEQUE, CB_EMPREINTE, ESPECES, VIREMENT
+  reference       String?  // Numéro de chèque, transaction, etc.
+  statut          String   @default("EN_ATTENTE_DEPOT") // EN_ATTENTE_DEPOT, RECU_NON_ENCAISSE, RESTITUE, ENCAISSE_PARTIEL, ENCAISSE_TOTAL
+  dateReception   DateTime? // Rétrocompatibilité
+  dateDepot       DateTime?
+  dateRestitution DateTime?
+  montantRetenu   Float    @default(0) // Retenue pour casse ou dégradation
+  montantRestitue Float?   // Montant effectif restitué au client
+  motifRetenue    String?  // Explication de la retenue
+  notes           String?
+  pdfUrl          String?
+  dateCreation    DateTime @default(now())
+  dateMaj         DateTime @updatedAt
+
+  client          Client   @relation(fields: [clientId], references: [id])
+  devis           Devis?   @relation(fields: [devisId], references: [id])
+  declarationsCasse DeclarationCasse[]
+
+  @@map("cautions")
+}
+
+// =====================
+// COMMERCIAL & DEVIS
+// =====================
+
+model Devis {
+  id              String   @id @default(cuid())
+  numero          String   @unique // Format: DEV-2026-0001
+  clientId        String
+  createurId      String
+  statut          String   @default("BROUILLON") // BROUILLON, ENVOYE, VALIDE, REFUSE, FACTURE
+  dateEvenement   DateTime?
+  lieuEvenement   String?
+  latitudeLieu    Float?
+  longitudeLieu   Float?
+  typeEvenement   String?  // Mariage, Corporate, etc.
+  dureeLocation   Int?     // en jours
+  sousTotal       Float    @default(0)
+  remise          Float    @default(0)
+  tauxTva         Float    @default(8.5)
+  montantTva      Float    @default(0)
+  totalTtc        Float    @default(0)
+  acompte         Float    @default(0)
+  resteAPayer     Float    @default(0)
+  conditions      String?
+  notes           String?
+  pdfUrl          String?
+  source          String   @default("INTERNE") // WEB ou INTERNE
+  signatureClientDate DateTime?
+  signatureClientIp   String?
+  tokenSignature      String?
+  signatureLivraison      String?  // Image base64 ou URL de l'émargement client à la livraison
+  dateSignatureLivraison  DateTime?
+  gpsLivraison            String?  // Coordonnées GPS lors de la signature client
+  photosAnomalies         String?  // JSON string : photos et descriptions de casse / manquants
+  dateCreation    DateTime @default(now())
+  dateMaj         DateTime @updatedAt
+  dateValidation  DateTime?
+  synchronise     Boolean  @default(true)
+
+  // Relations
+  client          Client   @relation(fields: [clientId], references: [id])
+  createur        Utilisateur @relation("CreateurDevis", fields: [createurId], references: [id])
+  lignes          LigneDevis[]
+  facture         Facture?
+  cautions        Caution[]
+  etapesTournee   Etape[]
+
+  @@map("devis")
+}
+
+model LigneDevis {
+  id          String @id @default(cuid())
+  devisId     String
+  articleId   String?
+  designation String
+  description String?
+  quantite    Int    @default(1)
+  prixUnitaire Float
+  remiseLigne Float  @default(0)
+  totalLigne  Float
+
+  devis   Devis   @relation(fields: [devisId], references: [id], onDelete: Cascade)
+  article Article? @relation(fields: [articleId], references: [id])
+
+  @@map("lignes_devis")
+}
+
+model Facture {
+  id              String   @id @default(cuid())
+  numero          String   @unique // Format: FAC-2026-0001
+  devisId         String   @unique
+  clientId        String
+  statut          String   @default("EMISE") // EMISE, PAYEE, EN_RETARD, ANNULEE
+  montantHt       Float
+  tauxTva         Float    @default(8.5)
+  montantTva      Float
+  montantTtc      Float
+  montantPaye     Float    @default(0)
+  dateEcheance    DateTime?
+  datePaiement    DateTime?
+  modePaiement    String?  // CB, VIREMENT, CHEQUE, ESPECES
+  pdfUrl          String?
+  dateCreation    DateTime @default(now())
+  dateMaj         DateTime @updatedAt
+
+  // Relations
+  devis   Devis  @relation(fields: [devisId], references: [id])
+  client  Client @relation(fields: [clientId], references: [id])
+
+  @@map("factures")
+}
+
+// =====================
+// GESTION DES STOCKS
+// =====================
+
+model Categorie {
+  id          String    @id @default(cuid())
+  nom         String    @unique
+  type        String    // GROS_MATERIEL, PETIT_MATERIEL
+  description String?
+  icone       String?
+  couleur     String?
+  dateCreation DateTime @default(now())
+
+  articles Article[]
+
+  @@map("categories")
+}
+
+model Article {
+  id              String   @id @default(cuid())
+  reference       String   @unique
+  nom             String
+  description     String?
+  categorieId     String
+  type            String   // GROS_MATERIEL, PETIT_MATERIEL
+  prixLocationJour Float   @default(0)
+  prixVente       Float?
+  quantiteTotale  Int      @default(0)
+  quantiteDisponible Int   @default(0)
+  seuilAlerte     Int      @default(5)
+  photoUrl        String?
+  visibleSurWeb   Boolean  @default(true)
+  enVedette       Boolean  @default(false)
+  afficherPrixWeb Boolean  @default(true)
+  imageWebUrl     String?
+  statut          String   @default("ACTIF") // ACTIF, INACTIF
+  dateCreation    DateTime @default(now())
+  dateMaj         DateTime @updatedAt
+
+  // Relations
+  categorie       Categorie @relation(fields: [categorieId], references: [id])
+  grosEquipements GrosEquipement[]
+  lignesDevis     LigneDevis[]
+  sousLocations   SousLocation[]
+  lotsLavage      LotLavage[]
+  declarationsCasse DeclarationCasse[]
+  packs           PackArticle[]
+
+  @@map("articles")
+}
+
+model GrosEquipement {
+  id              String   @id @default(cuid())
+  articleId       String
+  numeroSerie     String   @unique
+  statut          String   @default("DISPONIBLE") // DISPONIBLE, LOUE, EN_NETTOYAGE, EN_REPARATION
+  etat            String   @default("BON") // NEUF, BON, USE, A_REPARER, HORS_SERVICE
+  dateAchat       DateTime?
+  valeurAchat     Float?
+  localisation    String?
+  notes           String?
+  dateCreation    DateTime @default(now())
+  dateMaj         DateTime @updatedAt
+
+  // Relations
+  article     Article     @relation(fields: [articleId], references: [id])
+  maintenances Maintenance[]
+
+  @@map("gros_equipements")
+}
+
+model Maintenance {
+  id               String   @id @default(cuid())
+  grosEquipementId String
+  type             String   // REPARATION, NETTOYAGE, INSPECTION
+  description      String
+  cout             Float?
+  dateDebut        DateTime @default(now())
+  dateFin          DateTime?
+  statut           String   @default("EN_COURS") // EN_COURS, TERMINEE
+  prestataire      String?
+
+  grosEquipement GrosEquipement @relation(fields: [grosEquipementId], references: [id])
+
+  @@map("maintenances")
+}
+
+// =====================
+// LOGISTIQUE & TOURNÉES
+// =====================
+
+model Tournee {
+  id            String   @id @default(cuid())
+  numero        String   @unique // Format: TRN-2026-0001
+  date          DateTime
+  livreurId     String
+  camion        String?
+  statut        String   @default("PLANIFIEE") // PLANIFIEE, EN_COURS, TERMINEE, ANNULEE
+  notes         String?
+  dateCreation  DateTime @default(now())
+  dateMaj       DateTime @updatedAt
+
+  // Relations
+  livreur Utilisateur @relation("LivreurTournees", fields: [livreurId], references: [id])
+  etapes  Etape[]
+
+  @@map("tournees")
+}
+
+model Etape {
+  id            String   @id @default(cuid())
+  tourneeId     String
+  devisId       String?
+  ordre         Int
+  type          String   // LIVRAISON, REPRISE
+  adresse       String
+  codePostal    String?
+  ville         String?
+  latitude      Float?
+  longitude     Float?
+  heureEstimee  String?
+  heureArrivee  DateTime?
+  statut        String   @default("EN_ATTENTE") // EN_ATTENTE, EN_ROUTE, SUR_PLACE, TERMINEE
+  notes         String?
+  quantitesModifiees String? // JSON des modifications terrain
+  synchronise   Boolean  @default(true)
+  dateCreation  DateTime @default(now())
+  dateMaj       DateTime @updatedAt
+
+  // Relations
+  tournee    Tournee  @relation(fields: [tourneeId], references: [id], onDelete: Cascade)
+  devis      Devis?   @relation(fields: [devisId], references: [id])
+  signatures SignatureElectronique[]
+  photos     PhotoTerrain[]
+  cassesSignalees CasseSignalee[]
+
+  @@map("etapes")
+}
+
+model SignatureElectronique {
+  id         String   @id @default(cuid())
+  etapeId    String
+  signataire String   // Nom du signataire
+  role       String   // CLIENT, LIVREUR
+  imageUrl   String   // Chemin vers l'image de la signature
+  horodatage DateTime @default(now())
+  latitudeGps Float?
+  longitudeGps Float?
+  synchronise Boolean @default(true)
+
+  etape Etape @relation(fields: [etapeId], references: [id], onDelete: Cascade)
+
+  @@map("signatures_electroniques")
+}
+
+model PhotoTerrain {
+  id         String   @id @default(cuid())
+  etapeId    String
+  type       String   // INSTALLATION, REPRISE, CASSE
+  imageUrl   String
+  legende    String?
+  horodatage DateTime @default(now())
+  latitudeGps Float?
+  longitudeGps Float?
+  synchronise Boolean @default(true)
+
+  etape Etape @relation(fields: [etapeId], references: [id], onDelete: Cascade)
+
+  @@map("photos_terrain")
+}
+
+model CasseSignalee {
+  id           String   @id @default(cuid())
+  etapeId      String
+  articleNom   String
+  quantite     Int      @default(1)
+  description  String
+  photoUrl     String   // Photo obligatoire
+  montantEstime Float?
+  facturee     Boolean  @default(false)
+  horodatage   DateTime @default(now())
+  synchronise  Boolean  @default(true)
+
+  etape Etape @relation(fields: [etapeId], references: [id], onDelete: Cascade)
+
+  @@map("casses_signalees")
+}
+
+// =====================
+// ACHATS & SOUS-LOCATION
+// =====================
+
+model Fournisseur {
+  id           String   @id @default(cuid())
+  nom          String
+  contact      String?
+  telephone    String?
+  email        String?
+  adresse      String?
+  type         String   @default("CONFRERE") // CONFRERE, FOURNISSEUR
+  notes        String?
+  dateCreation DateTime @default(now())
+
+  sousLocations SousLocation[]
+
+  @@map("fournisseurs")
+}
+
+model SousLocation {
+  id              String   @id @default(cuid())
+  fournisseurId   String
+  articleId       String?
+  designation     String
+  quantite        Int
+  prixAchat       Float
+  prixRevente     Float
+  margeNette      Float    @default(0)
+  dateDebut       DateTime
+  dateFin         DateTime
+  dateRestitution DateTime?
+  statut          String   @default("EN_COURS") // EN_COURS, RESTITUEE, EN_RETARD
+  notes           String?
+  dateCreation    DateTime @default(now())
+
+  fournisseur Fournisseur @relation(fields: [fournisseurId], references: [id])
+  article     Article?    @relation(fields: [articleId], references: [id])
+
+  @@map("sous_locations")
+}
+
+// =====================
+// RÉSEAUX SOCIAUX
+// =====================
+
+model PublicationSociale {
+  id           String   @id @default(cuid())
+  plateforme   String   // FACEBOOK, INSTAGRAM
+  contenu      String
+  imagesUrls   String?  // JSON array d'URLs
+  statut       String   @default("BROUILLON") // BROUILLON, PLANIFIE, PUBLIE
+  datePlanifiee DateTime?
+  datePublication DateTime?
+  dateCreation DateTime @default(now())
+
+  @@map("publications_sociales")
+}
+
+// =====================
+// AUDIT & TRAÇABILITÉ
+// =====================
+
+model JournalAudit {
+  id            String   @id @default(cuid())
+  utilisateurId String
+  action        String   // CREATION, MODIFICATION, SUPPRESSION, CONNEXION, etc.
+  entite        String   // Nom du modèle concerné
+  entiteId      String?  // ID de l'enregistrement concerné
+  details       String?  // JSON des modifications
+  adresseIp     String?
+  horodatage    DateTime @default(now())
+
+  utilisateur Utilisateur @relation(fields: [utilisateurId], references: [id])
+
+  @@map("journal_audit")
+}
+
+// =====================
+// SYNCHRONISATION OFFLINE
+// =====================
+
+model FileSynchronisation {
+  id            String   @id @default(cuid())
+  entite        String   // Nom du modèle
+  entiteId      String   // ID de l'enregistrement
+  action        String   // CREATION, MODIFICATION, SUPPRESSION
+  donnees       String   // JSON des données
+  statut        String   @default("EN_ATTENTE") // EN_ATTENTE, SYNCHRONISE, ERREUR
+  tentatives    Int      @default(0)
+  erreur        String?
+  horodatage    DateTime @default(now())
+  dateSynchro   DateTime?
+
+  @@map("file_synchronisation")
+}
+
+// =====================
+// PARAMÈTRES & COMPTABILITÉ
+// =====================
+
+model ParametresEntreprise {
+  id                 String   @id @default(cuid())
+  
+  // Infos publiques
+  nom                String   @default("Isy Lok")
+  adresse            String?
+  telephone          String?
+  email              String?
+  siteWeb            String?
+  
+  // Infos légales
+  siret              String?
+  numTVA             String?
+  formeJuridique     String?  // Forme juridique, RCS, Capital, etc.
+  
+  // Paiement
+  iban               String?
+  bic                String?
+  
+  // Mentions légales
+  mentionsLegales    String?
+  
+  // Infos Comptables
+  emailComptable     String?
+  jourEnvoiComptable Int      @default(1) // Jour du mois
+  
+  dateCreation       DateTime @default(now())
+  dateMaj            DateTime @updatedAt
+
+  @@map("parametres_entreprise")
+}
+
+// =====================
+// ATELIER VAISSELLE & TEXTILE
+// =====================
+
+model LotLavage {
+  id               String    @id @default(cuid())
+  numero           String    @unique // Format: LOT-2026-0001
+  articleId        String
+  quantite         Int
+  statut           String    @default("A_LAVER") // A_LAVER, EN_COURS, PROPRE
+  type             String    @default("VAISSELLE") // VAISSELLE, TEXTILE
+  evenementOrigine String?
+  notes            String?
+  reintegreStock   Boolean   @default(false)
+  dateCreation     DateTime  @default(now())
+  dateMaj          DateTime  @updatedAt
+  dateCloture      DateTime?
+
+  article          Article   @relation(fields: [articleId], references: [id])
+
+  @@map("lots_lavage")
+}
+
+model ConditionnementAtelier {
+  id             String    @id @default(cuid())
+  devisId        String
+  articleId      String
+  quantite       Int
+  valide         Boolean   @default(false)
+  dateValidation DateTime?
+  valideParId    String?
+  notes          String?
+  dateCreation   DateTime  @default(now())
+  dateMaj        DateTime  @updatedAt
+
+  @@unique([devisId, articleId])
+  @@map("conditionnements_atelier")
+}
+
+model DeclarationCasse {
+  id            String   @id @default(cuid())
+  clientId      String
+  devisId       String?
+  articleId     String
+  quantite      Int
+  motif         String   // CASSE, PERTE, DEGRADATION
+  description   String?
+  impactCaution Float?   // Montant estimé ou retenu sur caution
+  cautionId     String?
+  dateCreation  DateTime @default(now())
+
+  client        Client   @relation(fields: [clientId], references: [id])
+  article       Article  @relation(fields: [articleId], references: [id])
+  caution       Caution? @relation(fields: [cautionId], references: [id])
+
+  @@map("declarations_casse")
+}
+
+// =====================
+// CMS & SITE WEB VITRINE
+// =====================
+
+model PackEvenement {
+  id                 String        @id @default(cuid())
+  nom                String
+  slug               String        @unique
+  description        String?
+  image              String?
+  typeEvenement      String        @default("MARIAGE") // MARIAGE, COCKTAIL, ENTREPRISE, ANNIVERSAIRE, AUTRE
+  capacitePersonnes  Int           @default(50)
+  prixEstime         Float?
+  enVedette          Boolean       @default(false)
+  actif              Boolean       @default(true)
+  ordreAffichage     Int           @default(0)
+  dateCreation       DateTime      @default(now())
+  dateMaj            DateTime      @updatedAt
+
+  articles           PackArticle[]
+
+  @@map("packs_evenements")
+}
+
+model PackArticle {
+  id                 String        @id @default(cuid())
+  packId             String
+  articleId          String
+  quantiteDefaut     Int           @default(1)
+
+  pack               PackEvenement @relation(fields: [packId], references: [id], onDelete: Cascade)
+  article            Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([packId, articleId])
+  @@map("pack_articles")
+}
+
+model OptionZoneLivraison {
+  id                 String   @id @default(cuid())
+  nomZone            String   // Centre, Sud, Nord Caraïbe, Nord Atlantique
+  communes           String   // Communes couvertes
+  delaiLivraison     String?  // ex: "24h - 48h"
+  tarifEstime        Float    // Tarif forfaitaire de livraison estimé
+  actif              Boolean  @default(true)
+  ordreAffichage     Int      @default(0)
+  dateCreation       DateTime @default(now())
+  dateMaj            DateTime @updatedAt
+
+  @@map("options_zones_livraison")
+}
+
+

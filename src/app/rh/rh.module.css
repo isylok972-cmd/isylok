@@ -1,0 +1,211 @@
+﻿/* Isy Lok — RH & Pointage */
+
+.conteneur {
+  min-height: 100vh;
+  padding: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(18, 18, 42, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(249, 115, 22, 0.1);
+  border-radius: 16px;
+  margin-bottom: 24px;
+  animation: apparaitre 0.5s ease-out;
+}
+
+@keyframes apparaitre {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.enteteGauche {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.boutonRetour {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 10px;
+  color: #fdba74;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.titreModule {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titreModule h1 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pointeuse Interface (Mobile First / Centered) */
+.pointeuseBox {
+  max-width: 400px;
+  margin: 0 auto 40px auto;
+  background: rgba(18, 18, 42, 0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  animation: apparaitre 0.6s ease-out 0.1s both;
+}
+
+.horloge {
+  font-family: 'Outfit', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: #f1f5f9;
+  margin-bottom: 8px;
+  letter-spacing: 2px;
+}
+
+.dateAujourdhui {
+  font-size: 16px;
+  color: #94a3b8;
+  margin-bottom: 24px;
+  text-transform: capitalize;
+}
+
+.boutonPointeuse {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 20px auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.boutonPointeuse span:first-child {
+  font-size: 40px;
+}
+
+.boutonPointeuse span:last-child {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.boutonDebut {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+.boutonDebut:hover { box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4); transform: scale(1.05); }
+
+.boutonFin {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+.boutonFin:hover { box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4); transform: scale(1.05); }
+
+.boutonBloque {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.gpsStatus {
+  font-size: 13px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.gpsActive { color: #34d399; }
+.gpsError { color: #f87171; }
+
+/* Dashboard Admin Heures */
+.dashboardAdmin {
+  background: rgba(18, 18, 42, 0.4);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  animation: apparaitre 0.6s ease-out 0.2s both;
+}
+
+.dashboardTitre {
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableau thead th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(249, 115, 22, 0.1);
+}
+
+.tableau tbody tr {
+  border-bottom: 1px solid rgba(249, 115, 22, 0.05);
+}
+
+.tableau tbody td {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.badgeType {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.typeDebut { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.typeFin { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+.lienGps {
+  color: #60a5fa;
+  text-decoration: none;
+  font-size: 12px;
+}
+.lienGps:hover { text-decoration: underline; }
