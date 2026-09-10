@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 export default function PageConnexion() {
   const [email, setEmail] = useState('')
-  const [motDePasse, setMotDePasse] = useState('admin123')
+  const [motDePasse, setMotDePasse] = useState('')
   const [erreur, setErreur] = useState('')
   const router = useRouter()
 
@@ -70,20 +70,15 @@ export default function PageConnexion() {
           {erreur && <div style={{ color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '10px', borderRadius: '8px', textAlign: 'center', fontSize: '14px' }}>{erreur}</div>}
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ color: '#94a3b8', fontSize: '13px', fontWeight: 600 }}>Compte de connexion</label>
-            <select 
+            <label style={{ color: '#94a3b8', fontSize: '13px', fontWeight: 600 }}>Adresse e-mail</label>
+            <input 
+              type="email" 
               value={email} 
               onChange={e => setEmail(e.target.value)}
+              placeholder="nom@exemple.mq"
               style={{ padding: '12px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(124, 16, 35, 0.4)', borderRadius: '8px', color: 'white', outline: 'none' }}
               required
-            >
-              <option value="">-- Choisir un compte --</option>
-              <option value="admin@event-gerance.fr">Administrateur (Admin)</option>
-              <option value="secretaire@event-gerance.fr">Secrétaire</option>
-              <option value="livreur1@event-gerance.fr">Livreur</option>
-              <option value="atelier@isylok.local">Opérateur Atelier (Vaisselle & Linge)</option>
-              <option value="web@isylok.local">Gestionnaire Site Web / CMS</option>
-            </select>
+            />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -92,6 +87,7 @@ export default function PageConnexion() {
               type="password" 
               value={motDePasse} 
               onChange={e => setMotDePasse(e.target.value)}
+              placeholder="••••••••"
               style={{ padding: '12px', background: 'rgba(0,0,0,0.5)', border: '1px solid rgba(124, 16, 35, 0.4)', borderRadius: '8px', color: 'white', outline: 'none' }}
               required
             />
